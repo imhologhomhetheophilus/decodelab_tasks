@@ -5,30 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DecodeLab Shop</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
 <header class="site-header">
   <nav class="navbar container">
     <div class="logo">DecodeLab-Shop</div>
 
-    <!-- Mobile toggle (optional but professional) -->
+    <!-- HAMBURGER -->
     <button id="hamburger" class="hamburger">☰</button>
 
     <ul class="nav-links" id="navLinks">
       <li><a href="#">Home</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#products">Products</a></li>
-      <li class="cart">
-        🛒 Cart (<span id="cartCount">0</span>)
-      </li>
+      <li class="cart">🛒 Cart (<span id="cartCount">0</span>)</li>
     </ul>
   </nav>
 </header>
@@ -43,23 +37,21 @@
       <h1>Shop Smart. Build Better Life.</h1>
       <p>Premium products at affordable prices.</p>
 
-      <button onclick="scrollToProducts()">
-        Explore Products
-      </button>
+      <button onclick="scrollToProducts()">Explore Products</button>
     </div>
 
     <div class="hero-media">
       <div class="slider">
-        <img class="slide active" src="/asset/slides/shirt.jpg" alt="Shirt">
-        <img class="slide" src="/asset/slides/bag.jpg" alt="Bag">
-        <img class="slide" src="/asset/slides/iphone.jpg" alt="Phone">
+        <img class="slide active" src="/asset/slides/shirt.jpg">
+        <img class="slide" src="/asset/slides/bag.jpg">
+        <img class="slide" src="/asset/slides/iphone.jpg">
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ================= SERVICES ================= -->
+<!-- ================= SERVICES (FIXED) ================= -->
 <section class="services-section container" id="services">
   <h2>Our Services</h2>
 
@@ -77,7 +69,7 @@
 
     <div class="service-card">
       <h3>24/7 Support</h3>
-      <p>Always here to help you anytime.</p>
+      <p>We are always available to help you.</p>
     </div>
 
   </div>
@@ -88,8 +80,6 @@
   <h2>Featured Products</h2>
 
   <p id="loading">Loading products...</p>
-
-  <!-- IMPORTANT: This ID must match JS -->
   <div class="products-grid" id="productsGrid"></div>
 </section>
 
@@ -98,7 +88,6 @@
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <div class="container footer-container">
-
     <h3>DecodeLab Shop</h3>
     <p>Building smart digital commerce experiences.</p>
 
@@ -109,12 +98,10 @@
       <a href="#">Terms</a>
     </div>
 
-    <p class="copy">© 2026 DecodeLab. All rights reserved.</p>
-
+    <p class="copy">© 2026 DecodeLab</p>
   </div>
 </footer>
 
-<!-- ================= SCRIPT ================= -->
 <script src="script.js"></script>
 
 </body>

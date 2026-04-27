@@ -1,114 +1,127 @@
 const API = "http://localhost:3000/api/products";
 
 const container = document.getElementById("productsGrid");
+const loadingEl = document.getElementById("loading");
+const cartCountEl = document.getElementById("cartCount");
 
-/* ================= SCROLL (FIXED HERO BUTTON) ================= */
-function scrollToProducts() {
-  document.getElementById("products")
-    .scrollIntoView({ behavior: "smooth" });
-}
-
-/* ================= SLIDER ================= */
-function startSlider() {
-  const slides = document.querySelectorAll(".slide");
-  let i = 0;
-
-  setInterval(() => {
-    slides.forEach(s => s.classList.remove("active"));
-    i = (i + 1) % slides.length;
-    slides[i].classList.add("active");
-  }, 3000);
-}
-/* ================= CART ================= */
 let cartCount = 0;
+let slideIndex = 0;
 
-function addToCart() {
-  cartCount++;
-  document.getElementById("cartCount").innerText = cartCount;
-}
-
-/* ================= NAVBAR (FIXED) ================= */
+/* ================= HAMBURGER MENU ================= */
 const hamburger = document.getElementById("hamburger");
 const navLinks = document.getElementById("navLinks");
 
-/* TOGGLE MENU */
 hamburger.addEventListener("click", () => {
   navLinks.classList.toggle("show");
 });
 
-/* CLOSE MENU WHEN CLICK LINK */
+/* CLOSE MENU WHEN CLICKING ANY LINK */
 document.querySelectorAll("#navLinks a").forEach(link => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("show");
   });
 });
 
-/* ================= LOAD PRODUCTS ================= */
-async function loadProducts() {
-  const res = await fetch(API);
-  const data = await res.json();
+/* CLOSE MENU WHEN CLICKING OUTSIDE (PRO UX) */
+document.addEventListener("click", (e) => {
+  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+    navLinks.classList.remove("show");
+  }
+});
 
-  document.getElementById("loading").style.display = "none";
-  container.innerHTML = "";
+/* ================= SLIDER ================= */
+function startSlider() {
+  const slides = document.querySelectorAll(".slide");
 
-  data.forEach(p => {
-    const div = document.createElement("div");
-    div.className = "product-card";
+  if (!slides.length) return;
 
-    div.innerHTML = `
-      <img src="${p.image}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p>$${p.price}</p>
+  setInterval(() => {
+    slides.forEach(s => s.classList.remove("active"));
 
-      <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
-
-      <button class="edit-btn" onclick="editProduct(${p.id})">Edit</button>
-
-      <button class="delete-btn" onclick="deleteProduct(${p.id})">Delete</button>
-    `;
-
-    container.appendChild(div);
-  });
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add("active");
+  }, 3000);
 }
 
-/* ================= ADD PRODUCT ================= */
-async function addProduct() {
-  const name = document.getElementById("name").value;
-  const price = document.getElementById("price").value;
-  const image = document.getElementById("image").value;
+/* ================= SCROLL ================= */
+function scrollToProducts() {
+  document.getElementById("products")
+    .scrollIntoView({ behavior: "smooth" });
+}
 
-  await fetch(API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, price, image })
-  });
+/* ================= LOAD PRODUCTS ================= */
+async function loadProducts() {
+  try {
+    loadingEl.style.display = "block";
 
-  loadProducts();
+    const res = await fetch(API);
+    const data = await res.json();
+
+    loadingEl.style.display = "none";
+    container.innerHTML = "";
+
+    if (!Array.isArray(data) || data.length === 0) {
+      container.innerHTML = "<p>No products found</p>";
+      return;
+    }
+
+    data.forEach(p => {
+
+      const img = p.image?.startsWith("/")
+        ? p.image
+        : `/asset/images/${p.image}`;
+
+      container.innerHTML += `
+        <div class="product-card">
+          <img src="${img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p>₦${Number(p.price).toLocaleString()}</p>
+
+          <button onclick="addToCart()">Add to Cart</button>
+          <button onclick="editProduct('${p._id}')">Edit</button>
+          <button onclick="deleteProduct('${p._id}')">Delete</button>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error("LOAD ERROR:", err);
+    loadingEl.innerText = "Failed to load products";
+  }
+}
+
+/* ================= CART ================= */
+function addToCart() {
+  cartCount++;
+  cartCountEl.innerText = cartCount;
 }
 
 /* ================= EDIT PRODUCT ================= */
 async function editProduct(id) {
-  const newName = prompt("Enter new name:");
-  const newPrice = prompt("Enter new price:");
+  const name = prompt("New name:");
+  const price = prompt("New price:");
 
-  if (!newName || !newPrice) return;
+  if (!name || !price) return;
 
   await fetch(`${API}/${id}`, {
-    method: "PUT",   // ✅ RESTFUL UPDATE
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: newName, price: newPrice })
+    body: JSON.stringify({ name, price: Number(price) })
   });
 
   loadProducts();
 }
 
-/* ================= DELETE ================= */
+/* ================= DELETE PRODUCT ================= */
 async function deleteProduct(id) {
-  await fetch(`${API}/${id}`, { method: "DELETE" });
+  if (!confirm("Delete product?")) return;
+
+  await fetch(`${API}/${id}`, {
+    method: "DELETE"
+  });
+
   loadProducts();
 }
-
-
 
 /* ================= INIT ================= */
 window.addEventListener("DOMContentLoaded", () => {

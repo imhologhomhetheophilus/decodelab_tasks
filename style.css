@@ -58,7 +58,6 @@ body {
   color: var(--primary);
 }
 
-/* NAV LINKS */
 .nav-links {
   display: flex;
   gap: 18px;
@@ -75,7 +74,6 @@ body {
   color: var(--primary);
 }
 
-/* HAMBURGER */
 .hamburger {
   display: none;
   font-size: 24px;
@@ -105,11 +103,11 @@ body {
   margin-top: 10px;
 }
 
-/* BUTTON */
 button {
   font-family: var(--font);
 }
 
+/* HERO BUTTON */
 .hero-text button {
   margin-top: 15px;
   padding: 12px 18px;
@@ -197,10 +195,14 @@ button {
   padding: 14px;
   text-align: left;
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 .product-card img {
@@ -211,96 +213,107 @@ button {
 }
 
 .product-card h3 {
-  margin-top: 10px;
+  margin-top: 5px;
   font-size: var(--h3);
 }
 
 .product-card p {
   color: var(--muted);
-  margin-top: 5px;
 }
 
-/* BUTTONS */
-.add-cart-btn,
-.delete-btn,
-.edit-btn {
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
+/* ================= PRODUCT BUTTONS ================= */
+.product-card button {
+  padding: 8px 10px;
   border: none;
-  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
   transition: 0.3s;
 }
 
-/* BUTTON COLORS */
-.add-cart-btn {
+/* ADD TO CART */
+.product-card button:nth-of-type(1) {
   background: var(--primary);
   color: white;
 }
 
-.add-cart-btn:hover {
-  background: #e65c00;
+.product-card button:nth-of-type(1):hover {
+  opacity: 0.85;
 }
 
-.edit-btn {
-  background: #2563eb;
+/* EDIT */
+.product-card button:nth-of-type(2) {
+  background: #3b82f6;
   color: white;
 }
 
-.edit-btn:hover {
-  background: #1d4ed8;
+.product-card button:nth-of-type(2):hover {
+  opacity: 0.85;
 }
 
-.delete-btn {
+/* DELETE */
+.product-card button:nth-of-type(3) {
   background: #ef4444;
   color: white;
 }
 
-.delete-btn:hover {
-  background: #dc2626;
+.product-card button:nth-of-type(3):hover {
+  opacity: 0.85;
 }
 
-/* ================= FOOTER ================= */
+/* ================= FOOTER (UPGRADED) ================= */
 .footer {
-  background: #fff;
-  border-top: 1px solid var(--border);
-  padding: 30px;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: #fff;
+  padding: 60px 20px;
   text-align: center;
+  margin-top: 60px;
+}
+
+.footer h3 {
+  font-size: 20px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.footer p {
+  color: #cbd5e1;
+  font-size: 14px;
 }
 
 .footer-links {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin: 10px 0;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 18px 0;
 }
 
 .footer-links a {
   text-decoration: none;
-  color: var(--muted);
+  color: #cbd5e1;
+  font-size: 14px;
   transition: 0.3s;
 }
 
 .footer-links a:hover {
   color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .copy {
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 10px;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-  /* SHOW HAMBURGER */
   .hamburger {
     display: block;
   }
 
-  /* HIDE NAV */
   .nav-links {
     display: none;
     position: absolute;
@@ -318,7 +331,6 @@ button {
     display: flex;
   }
 
-  /* STACK */
   .hero-grid {
     grid-template-columns: 1fr;
   }
