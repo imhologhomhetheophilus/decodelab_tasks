@@ -43,3 +43,75 @@ document.querySelectorAll("#navLinks a").forEach(link => {
   });
 });
 
+/* ================= LOAD PRODUCTS ================= */
+async function loadProducts() {
+  const res = await fetch(API);
+  const data = await res.json();
+
+  document.getElementById("loading").style.display = "none";
+  container.innerHTML = "";
+
+  data.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "product-card";
+
+    div.innerHTML = `
+      <img src="${p.image}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>$${p.price}</p>
+
+      <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
+
+      <button class="edit-btn" onclick="editProduct(${p.id})">Edit</button>
+
+      <button class="delete-btn" onclick="deleteProduct(${p.id})">Delete</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+/* ================= ADD PRODUCT ================= */
+async function addProduct() {
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const image = document.getElementById("image").value;
+
+  await fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, price, image })
+  });
+
+  loadProducts();
+}
+
+/* ================= EDIT PRODUCT ================= */
+async function editProduct(id) {
+  const newName = prompt("Enter new name:");
+  const newPrice = prompt("Enter new price:");
+
+  if (!newName || !newPrice) return;
+
+  await fetch(`${API}/${id}`, {
+    method: "PUT",   // ✅ RESTFUL UPDATE
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: newName, price: newPrice })
+  });
+
+  loadProducts();
+}
+
+/* ================= DELETE ================= */
+async function deleteProduct(id) {
+  await fetch(`${API}/${id}`, { method: "DELETE" });
+  loadProducts();
+}
+
+
+
+/* ================= INIT ================= */
+window.addEventListener("DOMContentLoaded", () => {
+  loadProducts();
+  startSlider();
+});
